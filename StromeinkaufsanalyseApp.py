@@ -10,8 +10,8 @@ def load_excel_file(uploaded_file):
         st.error(f"Fehler beim Laden der Datei: {e}")
         return None
 
-st.set_page_config(page_title="Stromeinkaufsanalyse", layout="wide")
-st.title("💶 Stromeinkaufsanalyse")
+st.set_page_config(page_title="Zeitbins erstellen", layout="wide")
+st.title("Erstellung von Zeitbins")
 
 uploaded_file = st.file_uploader("📁 Bereinigte Excel-Datei hochladen", type=["xlsx", "xls"])
 
