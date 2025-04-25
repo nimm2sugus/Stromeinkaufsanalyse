@@ -4,7 +4,7 @@ import plotly.express as px
 
 def load_excel_file(uploaded_file):
     try:
-        df = pd.read_excel(uploaded_file, engine='openpyxl')
+        df = pd.read_excel(uploaded_file)
         return df
     except Exception as e:
         st.error(f"Fehler beim Laden der Datei: {e}")
