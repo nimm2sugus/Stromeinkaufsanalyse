@@ -21,21 +21,26 @@ if uploaded_file is not None:
 
     if df is not None:
         st.write(df)
-    else:
-        st.warning("Dies ist ein komisches Format für den Upload :/")
 
         # Verbrauch im Zeitverlauf (alle Einzelvorgänge)
         st.subheader("Normierte Verläufe")
-        fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", markers=True)
-        fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", markers=True)
 
-        # Neue Figure erstellen und Traces aus beiden px-Figuren übernehmen
-        fig_combined = go.Figure()
+        # Prüfen, ob die nötigen Spalten existieren
+        required_cols = ["Beendet", "Verbrauch normiert", "Zeitstempel Day Ahead Marktpreis", "Day Ahead Marktpreis normiert"]
+        if all(col in df.columns for col in required_cols):
+            fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", markers=True)
+            fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", markers=True)
 
-        # Traces von fig1 und fig2 hinzufügen
-        for trace in fig_line_verbrauch.data:
-            fig_combined.add_trace(trace)
-        for trace in fig_line_marktpreis.data:
-            fig_combined.add_trace(trace)
+            # Neue Figure erstellen und Traces aus beiden px-Figuren übernehmen
+            fig_combined = go.Figure()
 
-        st.plotly_chart(fig_combined, use_container_width=True)
+            for trace in fig_line_verbrauch.data:
+                fig_combined.add_trace(trace)
+            for trace in fig_line_marktpreis.data:
+                fig_combined.add_trace(trace)
+
+            st.plotly_chart(fig_combined, use_container_width=True)
+        else:
+            st.warning("Nicht alle nötigen Spalten sind in der Excel-Datei enthalten.")
+    else:
+        st.warning("Dies ist ein komisches Format für den Upload :/")
