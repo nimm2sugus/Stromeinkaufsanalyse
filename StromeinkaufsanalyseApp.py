@@ -28,17 +28,24 @@ if uploaded_file is not None:
         # Prüfen, ob die nötigen Spalten existieren
         required_cols = ["Beendet", "Verbrauch normiert", "Zeitstempel Day Ahead Marktpreis", "Day Ahead Marktpreis normiert"]
         if all(col in df.columns for col in required_cols):
-            fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", color="red", markers=True)
-            fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", color="blue", markers=True)
+            # Erstellen der beiden Line-Plots
+            fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", markers=True)
+            fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", markers=True)
 
             # Neue Figure erstellen und Traces aus beiden px-Figuren übernehmen
             fig_combined = go.Figure()
 
+            # Linie für Verbrauch normiert - Farbe auf Rot setzen
             for trace in fig_line_verbrauch.data:
                 fig_combined.add_trace(trace)
+                fig_combined.update_traces(line=dict(color='red'), selector=dict(name='Verbrauch normiert'))
+
+            # Linie für Marktpreis normiert - Farbe auf Blau setzen
             for trace in fig_line_marktpreis.data:
                 fig_combined.add_trace(trace)
+                fig_combined.update_traces(line=dict(color='blue'), selector=dict(name='Day Ahead Marktpreis normiert'))
 
+            # Zeigen des kombinierten Diagramms in Streamlit
             st.plotly_chart(fig_combined, use_container_width=True)
         else:
             st.warning("Nicht alle nötigen Spalten sind in der Excel-Datei enthalten.")
