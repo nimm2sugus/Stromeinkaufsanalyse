@@ -21,7 +21,7 @@ if uploaded_file is not None:
     if df is not None:
         st.subheader("Originaldaten")
         df['Beendet'] = pd.to_datetime(df['Beendet'], errors='coerce')
-        df['Verbrauch_kWh'] = pd.to_numeric(df['Verbrauch (kWh)'], errors='coerce')
+        df['Verbrauch_kWh'] = pd.to_numeric(df['Verbrauch [kWh]'], errors='coerce')
 
         df['Monat'] = df['Beendet'].dt.month
         df['Tag'] = df['Beendet'].dt.day
