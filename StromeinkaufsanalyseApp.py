@@ -28,22 +28,34 @@ if uploaded_file is not None:
         # Prüfen, ob die nötigen Spalten existieren
         required_cols = ["Beendet", "Verbrauch normiert", "Zeitstempel Day Ahead Marktpreis", "Day Ahead Marktpreis normiert"]
         if all(col in df.columns for col in required_cols):
-            # Erstellen der beiden Line-Plots
-            fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", markers=True)
-            fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", markers=True)
-
-            # Neue Figure erstellen und Traces aus beiden px-Figuren übernehmen
+            # Neue Figure erstellen
             fig_combined = go.Figure()
 
-            # Linie für Verbrauch normiert - Farbe auf Rot setzen
-            for trace in fig_line_verbrauch.data:
-                fig_combined.add_trace(trace)
-                fig_combined.update_traces(line=dict(color='red'), selector=dict(name='Verbrauch normiert'))
+            # Linie für "Verbrauch normiert" - Farbe auf Rot setzen
+            fig_combined.add_trace(go.Scatter(
+                x=df['Beendet'], 
+                y=df['Verbrauch normiert'], 
+                mode='lines+markers', 
+                name='Verbrauch normiert', 
+                line=dict(color='red')
+            ))
 
-            # Linie für Marktpreis normiert - Farbe auf Blau setzen
-            for trace in fig_line_marktpreis.data:
-                fig_combined.add_trace(trace)
-                fig_combined.update_traces(line=dict(color='blue'), selector=dict(name='Day Ahead Marktpreis normiert'))
+            # Linie für "Day Ahead Marktpreis normiert" - Farbe auf Blau setzen
+            fig_combined.add_trace(go.Scatter(
+                x=df['Zeitstempel Day Ahead Marktpreis'], 
+                y=df['Day Ahead Marktpreis normiert'], 
+                mode='lines+markers', 
+                name='Day Ahead Marktpreis normiert', 
+                line=dict(color='blue')
+            ))
+
+            # Titel und Layout anpassen
+            fig_combined.update_layout(
+                title="Normierte Verläufe",
+                xaxis_title="Zeit",
+                yaxis_title="Wert",
+                showlegend=True
+            )
 
             # Zeigen des kombinierten Diagramms in Streamlit
             st.plotly_chart(fig_combined, use_container_width=True)
