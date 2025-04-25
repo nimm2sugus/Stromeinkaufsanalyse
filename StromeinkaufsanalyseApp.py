@@ -28,8 +28,8 @@ if uploaded_file is not None:
         # Prüfen, ob die nötigen Spalten existieren
         required_cols = ["Beendet", "Verbrauch normiert", "Zeitstempel Day Ahead Marktpreis", "Day Ahead Marktpreis normiert"]
         if all(col in df.columns for col in required_cols):
-            fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", markers=True)
-            fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", markers=True)
+            fig_line_verbrauch = px.line(df, x="Beendet", y="Verbrauch normiert", title="Verbrauch normiert", color="red", markers=True)
+            fig_line_marktpreis = px.line(df, x="Zeitstempel Day Ahead Marktpreis", y="Day Ahead Marktpreis normiert", title="Day Ahead Marktpreis normiert", color="blue", markers=True)
 
             # Neue Figure erstellen und Traces aus beiden px-Figuren übernehmen
             fig_combined = go.Figure()
